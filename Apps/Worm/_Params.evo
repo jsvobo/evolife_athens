@@ -1,0 +1,14 @@
+ParamName	ParamValue
+ApplicationDir	.
+DisplayPeriod	1
+Icon	worm.png
+MessageDisplay	20
+Rule	1010055
+RunConfigFile	_Params.evo
+ScenarioFileName	Worm.evo
+ScenarioName	Worm
+Size	15
+Speed	150
+Target	Worm.py
+TimeLimit	11000
+Title	Evolife_Worm

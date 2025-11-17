@@ -1,0 +1,11 @@
+BatchMode	1
+CollectiveBenefit	0-100 10
+Cumulative	0 1
+IndividualBenefit	-10-10 2
+NumberOfGroups	1-5 2
+NumberOfGroups	5-10 2
+NumberOfGroups	10-50 10
+PopulationSize	500
+MigrationRate	1-10 2
+MigrationRate	10 20 30
+TimeLimit	5000

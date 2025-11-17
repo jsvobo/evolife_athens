@@ -1,0 +1,13 @@
+
+
+Cellular automaton
+===========================
+
+You may try the famous rule #30
+
+Possible starting patterns:
+	P='0'*127+'1'+'0'*128
+	P='01'*128
+	P=[randint(0,1) for _ in range(128)]
+	
+
