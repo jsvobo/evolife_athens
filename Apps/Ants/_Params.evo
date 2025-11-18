@@ -2,7 +2,7 @@ ParamName	ParamValue
 ApplicationDir	.
 DisplayPeriod	1
 Evaporation	5
-Exploration	0
+Exploration	50
 FoodQuantity	222
 FoodSourceSize	4
 Icon	ants-1.gif

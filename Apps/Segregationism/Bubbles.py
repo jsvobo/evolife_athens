@@ -20,16 +20,19 @@ based on resemblance
 ##############################################################################
 
 import sys
+import 
 sys.path.append('..')
 sys.path.append('../../..')
 
 import random
 from math import copysign
+from sklearn.cluster import MiniBatchKMeans, KMeans
+from collections import deque, defaultdict
 
-import Evolife.Ecology.Observer				as EO
-import Evolife.Scenarii.Parameters 			as EPar
-import Evolife.Graphics.Evolife_Window 	as EW
-import Evolife.Graphics.Landscape			as Landscape
+import Evolife.Ecology.Observer as EO
+import Evolife.Graphics.Evolife_Window as EW
+import Evolife.Graphics.Landscape as Landscape
+import Evolife.Scenarii.Parameters as EPar
 
 INDIV_ASPECT = ('red', -1)	# negative size makes it zoomable
 FILM_ASPECT = ('green', -2)	# negative size makes it zoomable
@@ -59,6 +62,8 @@ class Individual:
 		self.Location = None
 		while True:
 			if self.move(randomLoc()):	break
+		self.cluster = None
+
 		
 	def display(self):
 		Observer.record((self.ID, self.Location + self.Aspect)) # for ongoing display
@@ -129,6 +134,39 @@ class Population:
 		self.CallsSinceLastMove = 0  # counts the number of times agents were proposed to move since last actual move
 		self.films = []		# recent films
 		self.currentFilm = None
+	
+		# Cluster all individuals into K clusters using KMeans
+		K = 10
+		# Collect positions of all individuals
+		positions = [indiv.Location for indiv in self.members]
+		# Fit KMeans
+		if len(positions) >= K:
+			kmeans = KMeans(n_clusters=K, n_init=10)
+			labels = kmeans.fit_predict(positions)
+			# Optionally, store or use the cluster labels
+			for indiv, label in zip(self.members, labels):
+				indiv.ClusterLabel = label
+		else:
+			for indiv in self.members:
+				indiv.ClusterLabel = 0  # fallback: assign all to one cluster
+		
+		# Store cluster centers and WCSS (within-cluster sum of squares)
+		if len(positions) >= K:
+			self.ClusterCenters = kmeans.cluster_centers_
+			self.WCSS = kmeans.inertia_
+		else:
+			self.ClusterCenters = None
+			self.WCSS = None
+
+		# Initialize MiniBatchKMeans with KMeans centers if available
+		if self.ClusterCenters is not None:
+			mbkmeans = MiniBatchKMeans(n_clusters=K, init=self.ClusterCenters, n_init=1, batch_size=20)
+			mbkmeans.cluster_centers_ = self.ClusterCenters
+			self.clustering = mbkmeans
+			self.MiniBatchLabels = mbkmeans.labels_
+			self.ClusterCenters = mbkmeans.cluster_centers_
+			self.WCSS = mbkmeans.inertia_
+
 			
 	def selectIndividual(self):	return random.choice(self.members)
 	
@@ -136,12 +174,11 @@ class Population:
 		""" This function is repeatedly called by the simulation thread.
 			One agent is randomly chosen and decides what it does
 		"""
-		
-		Observer.season()  # sets StepId
-		if self.currentFilm is None:
-			# Creating film
+
+		# sets StepId
+		Observer.season()  
+		if self.currentFilm is None:# Creating film
 			self.currentFilm = Film('F%d' % Observer.StepId)
-			# erasing old film from display
 			for film in self.films[:-Gbl['DisplayTrail']]:
 				film.erase(display=True)
 			return True
@@ -151,28 +188,90 @@ class Population:
 			radius=Gbl['InfluenceRadius'])
 		DirectlyConcerned = random.sample(DirectlyConcerned, 
 			len(DirectlyConcerned) * Gbl['InfluenceRatio'] // 100)
-		# Concerned = set(DirectlyConcerned)
-		Concerned = DirectlyConcerned[:]	# making ground copy
-		# print(len(Concerned), end=' ', flush=True)
-		for indiv in DirectlyConcerned:	
-			# Influence of individuals on individuals
+
+		# making ground copy	
+		Concerned = DirectlyConcerned[:]	
+
+		for indiv in DirectlyConcerned:	# Influence of individuals on individuals
 			IndirectlyConcerned = indiv.inspect(Type='individual', radius=Gbl['NeighbourhoodRadius'])
 			IndirectlyConcerned = random.sample(IndirectlyConcerned, 
 				len(IndirectlyConcerned) * Gbl['InfluenceRatio'] // 100)
-			# print('\t', len(IndirectlyConcerned), flush=True)
-			# Concerned |= set(IndirectlyConcerned)
 			Concerned += IndirectlyConcerned
-		# print(len(Concerned), flush=True)
-		# print(' '.join([str(D) for D in Concerned]))
 		for indiv in Concerned:	indiv.closer(self.currentFilm.Location)
-		# print(' '.join([str(D) for D in Concerned]))
+
 		self.films.append(self.currentFilm)
 		self.currentFilm = None
 		
+		# Perform MiniBatchKMeans clustering on the locations of all Concerned individuals
+		if Concerned:
+			concerned_positions = [indiv.Location for indiv in Concerned]
+			self.clustering.partial_fit(concerned_positions)
+			self.MiniBatchLabels = self.clustering.labels_
+			self.ClusterCenters = self.clustering.cluster_centers_
+			self.WCSS = self.clustering.inertia_
 		
+		# Predict cluster for all individuals and save to individual.cluster
+		positions = [indiv.Location for indiv in self.members]
+		if hasattr(self, 'clustering') and self.clustering is not None and positions:
+			predicted_clusters = self.clustering.predict(positions)
+			for indiv, cluster in zip(self.members, predicted_clusters):
+				indiv.cluster = cluster
+		
+		# For each cluster, compute the largest continuous patch (connected component) size
+		def get_neighbors(loc):
+			# 4-connected neighbors (up, down, left, right)
+			x, y = loc
+			neighbors = [
+				((x - 1) % Gbl['LandSize'], y),
+				((x + 1) % Gbl['LandSize'], y),
+				(x, (y - 1) % Gbl['LandSize']),
+				(x, (y + 1) % Gbl['LandSize']),
+			]
+			return neighbors
+
+		# Group individuals by cluster
+		cluster_to_inds = defaultdict(list)
+		for indiv in self.members:
+			if hasattr(indiv, 'cluster'):
+				cluster_to_inds[indiv.cluster].append(indiv)
+
+		self.LargestPatchSizes = {}  # cluster_id -> largest patch size
+		self.IndividualPatchSizes = {}  # indiv.ID -> patch size
+		self.PatchSizes = {}  # cluster_id -> list of patch sizes
+		self.MeanPatchSizes = {}  # cluster_id -> mean patch size
+
+		for cluster_id, inds in cluster_to_inds.items():
+			# Build set of locations for this cluster
+			loc_to_indiv = {indiv.Location: indiv for indiv in inds}
+			unvisited = set(loc_to_indiv.keys())
+			largest_patch = 0
+			indiv_patch_size = {}
+			patch_sizes = []
+
+			while unvisited:
+				start = unvisited.pop()
+				queue = deque([start])
+				patch = {start}
+				while queue:
+					loc = queue.popleft()
+					for n in get_neighbors(loc):
+						if n in unvisited and n in loc_to_indiv:
+							unvisited.remove(n)
+							queue.append(n)
+							patch.add(n)
+				# Mark patch size for all individuals in this patch
+				for loc in patch:
+					indiv_patch_size[loc_to_indiv[loc].ID] = len(patch)
+				patch_sizes.append(len(patch))
+				if len(patch) > largest_patch:
+					largest_patch = len(patch)
+
+			self.LargestPatchSizes[cluster_id] = largest_patch
+			self.PatchSizes[cluster_id] = patch_sizes
+			self.MeanPatchSizes[cluster_id] = sum(patch_sizes) / len(patch_sizes) if patch_sizes else 0
+			self.IndividualPatchSizes.update(indiv_patch_size)
 
 		# indiv = self.selectIndividual()	# indiv who will play the game	
-		
 		self.CallsSinceLastMove += 1
 		if self.CallsSinceLastMove > 100 * self.popSize:
 			return False	# situation is probably stable
@@ -203,4 +302,5 @@ if __name__ == "__main__":
 
 	print("Bye.......")
 	
+__author__ = 'Dessalles'
 __author__ = 'Dessalles'

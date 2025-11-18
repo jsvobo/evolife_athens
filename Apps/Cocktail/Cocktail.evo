@@ -1,12 +1,13 @@
+ParamName	ParamValue
 ApplicationDir	.
-Attenuation	0
+Attenuation	1
 DisplayPeriod	1
 DotSize	7
 Icon	cocktailparty.gif
 Influence	100
-LandSize	100
+LandSize	50
 NoiseDisplay	1
-PopulationSize	44
+PopulationSize	25
 ResultDir	./___Results
 RunConfigFile	_Params.evo
 SNR	20

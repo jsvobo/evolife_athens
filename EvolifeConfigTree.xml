@@ -10,11 +10,11 @@
 			<Name>CurrentScenario</Name>
 			<Parameter>
 				<Name>ScenarioName</Name>
-				<Value>HeteroclineCycle</Value>
+				<Value>WernerDyer</Value>
 			</Parameter>
 			<Parameter>
 				<Name>ScenarioFileName</Name>
-				<Value>Expe/Heterocline.evo</Value>
+				<Value>Expe\WernerDyer.evo</Value>
 			</Parameter>
 		</Parameter>
 		<Parameter>
@@ -407,27 +407,27 @@
 		<Parameter>
 			<Name>PopulationSize</Name>
 			<Description><info><![CDATA[The size of the population is maintained constant <br><br>]]></info></Description>
-			<Value>100</Value>
+			<Value>400</Value>
 		</Parameter>
 		<Parameter>
 			<Name>MigrationRate</Name>
 			<Description><info><![CDATA[Each year, a fraction (in %) of individuals migrate between groups.]]></info></Description>
-			<Value>30</Value>
+			<Value>10</Value>
 		</Parameter>
 		<Parameter>
 			<Name>ReproductionRate</Name>
 			<Description><info><![CDATA[Proportion of the population that is replaced with newborns each year (in %)<br>]]></info></Description>
-			<Value>20</Value>
+			<Value>30</Value>
 		</Parameter>
 		<Parameter>
 			<Name>SelectionPressure</Name>
 			<Description><info><![CDATA[Defines how individual survival depends on score:<br><br>0 -->&nbsp;&nbsp; no bias<br>12 -->&nbsp;&nbsp;Highest scores may have 12 times less chance to be eliminated<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;than individuals with lowest scores<br><br>(Note that selection may also be achieved through differential reproduction<br>(see parameter Selectivity))<br><br>Important: For selection pressure to operate properly, scores should always be positive<br><br>Warning: This selection method tends to "saturate": when most scores reach high values,<br>the method is blind to slight differences among individuals. However, it might be less<br>violent than the selectivity method, which has converse qualities.<br><br>At the beginning of the 'Selection pressure' process, scores are linearly converted into life points (from 0 to SelectionPressure). Then individuals are repeatedly exposed to random accidents that cost them a life point. The process is repeated until the size of the population is brought back to its maximal value.]]></info></Description>
-			<Value>20</Value>
+			<Value>0</Value>
 		</Parameter>
 		<Parameter>
 			<Name>Selectivity</Name>
 			<Description><info><![CDATA[Defines how parenthood is biased toward individuals with high scores<br><br>S == 0 --> no bias<br>S == 1 --> elitism is roughly linear<br>S == 20 --> strong elitism<br>S == 40 --> very strong elitism<br><br>(Note that selection may also be achieved through differential mortality <br>(see parameter SelectionPressure))<br><br> Warning: This selection method is elitist. It amplifies small differences among top inidividuals, <br>but fails to discriminate among the crowd. It favours extreme (or lucky) behaviour. The SelectionPressure method has converse <br>qualities.<br><br>At the beginning of the 'selectivity' process, individuals are ranked, based on their score. They are given a number of children that depends on their rank (which depends non-linearly on their score). Parents are repeatedly drawn from the set of individuals that still have children to beget.]]></info></Description>
-			<Value>0</Value>
+			<Value>3</Value>
 		</Parameter>
 		<Parameter>
 			<Name>NumberOfGroups</Name>
@@ -442,17 +442,17 @@
 		<Parameter>
 			<Name>Rounds</Name>
 			<Description><info><![CDATA[Numbers of times each individual interacts with others each year]]></info></Description>
-			<Value>1</Value>
+			<Value>0</Value>
 		</Parameter>
 		<Parameter>
 			<Name>AgeMax</Name>
 			<Description><info><![CDATA[Above that age, individuals die. Set to 0 if no maximum age.]]></info></Description>
-			<Value>10</Value>
+			<Value>4000</Value>
 		</Parameter>
 		<Parameter>
 			<Name>Noise</Name>
 			<Description><info><![CDATA[Amplitude of a multiplicative noise<br>in % between 0 and 100<br>that may affect interactions in some<br>scenarios.<br>]]></info></Description>
-			<Value>10</Value>
+			<Value>0</Value>
 		</Parameter>
 	</Parameter>
 	<Parameter>
@@ -478,12 +478,12 @@
 		<Parameter>
 			<Name>MutationRate</Name>
 			<Description><info><![CDATA[Mutation rate in xxx/1000 <br>]]></info></Description>
-			<Value>10</Value>
+			<Value>3</Value>
 		</Parameter>
 		<Parameter>
 			<Name>NbCrossover</Name>
 			<Description><info><![CDATA[Indicates the number of cut points when performing crossover]]></info></Description>
-			<Value>1</Value>
+			<Value>2</Value>
 		</Parameter>
 		<Parameter>
 			<Name>GeneCoding</Name>
@@ -518,12 +518,12 @@
 		<Parameter>
 			<Name>GeneLength</Name>
 			<Description><info><![CDATA[Some scenarios don't specify gene length (by setting it to zero).<br>The value indicated here is taken as default value in this case.]]></info></Description>
-			<Value>8</Value>
+			<Value>0</Value>
 		</Parameter>
 		<Parameter>
 			<Name>DNAFill</Name>
 			<Description><info><![CDATA[DNA created from scratch may be random (DNAFill = -1) <br>or filled withl 0s (DNAFill = 0) or with 1s (DNAFill =1)]]></info></Description>
-			<Value>0</Value>
+			<Value>-1</Value>
 		</Parameter>
 		<Parameter>
 			<Name>StartFromFile</Name>
@@ -541,12 +541,12 @@
 		<Parameter>
 			<Name>DisplayPeriod</Name>
 			<Description><info><![CDATA[Period between successive plots <br>0:&nbsp;&nbsp;no plot<br>1:&nbsp;&nbsp;plot every year<br>10: typical<br><br>]]></info></Description>
-			<Value>1</Value>
+			<Value>50</Value>
 		</Parameter>
 		<Parameter>
 			<Name>TimeLimit</Name>
 			<Description><info><![CDATA[Maximum number of steps before simulation stops. Set to 0 if no limit.<br>If DisplayPeriod == 0, Evolife will automatically exit after TimeLimit.<br>Otherwise, it will switch to stepwise mode. It is thus ready to <br>run until another TimeLimit is reached again.<br>]]></info></Description>
-			<Value>10000</Value>
+			<Value>20000</Value>
 		</Parameter>
 		<Parameter>
 			<Name>Title</Name>

@@ -7,11 +7,11 @@
 		<Name>Scenario</Name>
 		<Parameter>
 			<Name>ScenarioName</Name>
-			<Value>Affiliation</Value>
+			<Value>SocialSignals</Value>
 		</Parameter>
 		<Parameter>
 			<Name>ScenarioFileName</Name>
-			<Value>Affiliation_typical.evo</Value>
+			<Value>SocialSignals_typical.evo</Value>
 		</Parameter>
 	</Parameter>
 	<Parameter>
@@ -24,7 +24,7 @@
 		<Parameter>
 			<Name>AgeMax</Name>
 			<Description><info><![CDATA[after that age, the agent is reborn]]></info></Description>
-			<Value>300</Value>
+			<Value>1000</Value>
 		</Parameter>
 	</Parameter>
 	<Parameter>
@@ -32,7 +32,7 @@
 		<Parameter>
 			<Name>MaxFriends</Name>
 			<Description><info><![CDATA[Maximum number of friends]]></info></Description>
-			<Value>1</Value>
+			<Value>5</Value>
 		</Parameter>
 		<Parameter Scenario="Affiliation">
 			<Name>MaxFollowers</Name>
@@ -75,7 +75,7 @@
 		<Parameter>
 			<Name>SignallingCost</Name>
 			<Description><info><![CDATA[Proportional cost of investment in signalling]]></info></Description>
-			<Value>50</Value>
+			<Value>40</Value>
 		</Parameter>
 		<Parameter Scenario="SocialRunaway">
 			<Name>SignallingCostThreshold</Name>
@@ -160,12 +160,12 @@
 		<Parameter>
 			<Name>NbRunPerYear</Name>
 			<Description><info><![CDATA[number of runs each year (slows down display)]]></info></Description>
-			<Value>100</Value>
+			<Value>20</Value>
 		</Parameter>
 		<Parameter>
 			<Name>NbInteractions</Name>
 			<Description><info><![CDATA[number of social interactions per individual per run<br>(if integer instead of float, encounters are systematic (much slower)).]]></info></Description>
-			<Value>5</Value>
+			<Value>5.0</Value>
 		</Parameter>
 		<Parameter Scenario="Values">
 			<Name>SlowToFastRatio</Name>
@@ -178,32 +178,32 @@
 		<Parameter>
 			<Name>MemorySpan</Name>
 			<Description><info><![CDATA[memory of past success]]></info></Description>
-			<Value>15</Value>
+			<Value>10</Value>
 		</Parameter>
 		<Parameter>
 			<Name>LearningConservatism</Name>
 			<Description><info><![CDATA[Importance in % of immediate past solution]]></info></Description>
-			<Value>0</Value>
+			<Value>20</Value>
 		</Parameter>
 		<Parameter>
 			<Name>LearnHorizon</Name>
 			<Description><info><![CDATA[Beyond that portion in % of TimeLimit, individuals are born adults]]></info></Description>
-			<Value>10</Value>
+			<Value>60</Value>
 		</Parameter>
 		<Parameter>
 			<Name>LearningSpeed</Name>
 			<Description><info><![CDATA[Max additive exploration (for adults)]]></info></Description>
-			<Value>10</Value>
+			<Value>5</Value>
 		</Parameter>
 		<Parameter>
 			<Name>Infancy</Name>
 			<Description><info><![CDATA[Percent of AgeMax during which learning is faster]]></info></Description>
-			<Value>20</Value>
+			<Value>15</Value>
 		</Parameter>
 		<Parameter>
 			<Name>ImitationStrength</Name>
 			<Description><info><![CDATA[Influence of neighbours in %]]></info></Description>
-			<Value>0</Value>
+			<Value>40</Value>
 		</Parameter>
 		<Parameter>
 			<Name>LearningSimilarity</Name>
@@ -213,12 +213,12 @@
 		<Parameter>
 			<Name>Toric</Name>
 			<Description><info><![CDATA[If 1, learning space is circular (toric): maximal feature values are next to smallest values.]]></info></Description>
-			<Value>1</Value>
+			<Value>0</Value>
 		</Parameter>
 		<Parameter>
 			<Name>LearningProbability</Name>
 			<Description><info><![CDATA[Proportion of agents that learn each year, in %]]></info></Description>
-			<Value>1</Value>
+			<Value>3</Value>
 		</Parameter>
 		<Parameter>
 			<Name>LearningStart</Name>
@@ -236,7 +236,7 @@
 		<Parameter>
 			<Name>TimeLimit</Name>
 			<Description><info><![CDATA[Max number of simulation steps]]></info></Description>
-			<Value>500</Value>
+			<Value>1000</Value>
 		</Parameter>
 		<Parameter>
 			<Name>ApplicationDir</Name>
@@ -246,7 +246,7 @@
 		<Parameter>
 			<Name>Target</Name>
 			<Description><info><![CDATA[Programme to be executed]]></info></Description>
-			<Value>Affiliation.py</Value>
+			<Value>SocialSignals.py</Value>
 		</Parameter>
 		<Parameter>
 			<Name>RunConfigFile</Name>
@@ -261,7 +261,7 @@
 		<Parameter>
 			<Name>DumpStart</Name>
 			<Description><info><![CDATA[Points located below this x-value are discarded from the computation of average values.<br>Average values thus reflect the stable regime.]]></info></Description>
-			<Value>300</Value>
+			<Value>5000</Value>
 		</Parameter>
 	</Parameter>
 	<Parameter>
@@ -269,12 +269,12 @@
 		<Parameter>
 			<Name>DisplayPeriod</Name>
 			<Description><info><![CDATA[Display period]]></info></Description>
-			<Value>2</Value>
+			<Value>1</Value>
 		</Parameter>
 		<Parameter>
 			<Name>Title</Name>
 			<Description><info><![CDATA[Name of the present Configuration Editor]]></info></Description>
-			<Value>Evolife_Affiliation</Value>
+			<Value>Evolife_SocialSignals</Value>
 		</Parameter>
 		<Parameter>
 			<Name>Icon</Name>
@@ -294,7 +294,7 @@
 		<Parameter>
 			<Name>AvgFriendDistance</Name>
 			<Description><info><![CDATA[If non zero, displays average distance between friends]]></info></Description>
-			<Value>0</Value>
+			<Value>1</Value>
 		</Parameter>
 		<Parameter Scenario="Values">
 			<Name>NbBins</Name>

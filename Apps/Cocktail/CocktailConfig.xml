@@ -68,12 +68,12 @@
 	<Parameter>
 		<Name>LandSize</Name>
 		<Description><info><![CDATA[LandSize]]></info></Description>
-		<Value>100</Value>
+		<Value>50</Value>
 	</Parameter>
 	<Parameter>
 		<Name>PopulationSize</Name>
 		<Description><info><![CDATA[PopulationSize]]></info></Description>
-		<Value>44</Value>
+		<Value>25</Value>
 	</Parameter>
 	<Parameter>
 		<Name>SNR</Name>
@@ -83,7 +83,7 @@
 	<Parameter>
 		<Name>Attenuation</Name>
 		<Description><info><![CDATA[Attenuation of noise with time, in %]]></info></Description>
-		<Value>0</Value>
+		<Value>1</Value>
 	</Parameter>
 	<Parameter>
 		<Name>Influence</Name>

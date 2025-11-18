@@ -19,18 +19,18 @@ Individuals walk, and paths emerge
 # Walker                                                                     #
 ##############################################################################
 
+import cmath
+import random
 import sys
 from time import sleep
-import random
-import cmath
-		
+
 sys.path.append('..')
 sys.path.append('../../..')
-import Evolife.Scenarii.Parameters			as EPar
-import Evolife.Ecology.Observer				as EO
-import Evolife.Graphics.Evolife_Window	as EW
-import Evolife.Tools.Tools					as ET
-import Evolife.Graphics.Landscape			as Landscape_
+import Evolife.Ecology.Observer as EO
+import Evolife.Graphics.Evolife_Window as EW
+import Evolife.Graphics.Landscape as Landscape_
+import Evolife.Scenarii.Parameters as EPar
+import Evolife.Tools.Tools as ET
 
 # two functions to convert from complex numbers into (x,y) coordinates
 c2t = lambda c: (int(round(c.real)),int(round(c.imag))) # converts a complex into a couple
@@ -161,7 +161,7 @@ class Walker:
 			Value += Gbl.Parameter('PheromoneAttractiveness') * float(Land.pheromone(NewPos)) / Gbl.Parameter('Saturation')
 			# Value += Gbl.Parameter('PheromoneAttractiveness') * (Land.pheromone(NewPos))
 			# aversion to climbing
-			Value -= Gbl.Parameter('SlopeAversion') * abs(Land.Altitude(NewPos) - Land.Altitude(self.location))
+			Value -= Gbl.Parameter('SlopeAversion') * max(Land.Altitude(NewPos) - Land.Altitude(self.location), 0)
 			if Value > best:			  
 				acceptable = NewPos
 				best = Value

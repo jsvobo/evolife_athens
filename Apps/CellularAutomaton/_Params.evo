@@ -1,7 +1,7 @@
 ParamName	ParamValue
 ApplicationDir	.
 Icon	ElementaryCARule030_700.gif
-Rule	254
+Rule	102
 RunConfigFile	_Params.evo
 ScenarioFileName	CellularAutomaton.evo
 ScenarioName	CellularAutomaton

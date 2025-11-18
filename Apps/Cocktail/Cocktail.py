@@ -20,20 +20,22 @@ Individuals must talk louder to be heard, and may move to smaller discussion gro
 
 
 import sys
+
 sys.path.append('..')
 sys.path.append('../../..')
 
-import Evolife.Ecology.Observer				as EO
-import Evolife.Scenarii.Parameters 			as EPar
-import Evolife.Graphics.Evolife_Window 	as EW
-import Evolife.Graphics.Landscape			as Landscape_
-
+import Evolife.Ecology.Observer as EO
+import Evolife.Graphics.Evolife_Window as EW
+import Evolife.Graphics.Landscape as Landscape_
+import Evolife.Scenarii.Parameters as EPar
 from Evolife.Tools.Tools import boost
+
 print(boost())   # A technical trick that sometimes provides impressive speeding up
 
 	
-import random
 import math
+import random
+
 
 # global functions
 #	Sound level (voice) is displayed in blue shades
@@ -90,7 +92,7 @@ class Landscape(Landscape_.Landscape):
 		distance = sx + sy	# Manhattan distance
 		if distance:
 			# Level = (Level0 * Influence)/100 / math.log(1+distance,10)
-			Level = (Level0 * Gbl.Parameter('Influence'))/100.0 / distance
+			Level = (Level0 * Gbl.Parameter('Influence'))/100.0 / (distance*distance)
 		else:	Level = 0 # one is not noisy to oneself
 		# print Level0, 'gives', int(Level), 'at distance', distance,
 		return int(Level)
@@ -333,5 +335,7 @@ if __name__ == "__main__":
 	EW.Start(Pop.One_Decision, Observer, Capabilities='RPC')
 
 	print("Bye.......")
+	
+__author__ = 'Dessalles'
 	
 __author__ = 'Dessalles'

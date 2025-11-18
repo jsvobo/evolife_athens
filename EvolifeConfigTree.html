@@ -1,7 +1,7 @@
 <html>
 <h3><a href="http://www.dessalles.fr/Evolife">Goto Evolife documentation</a></h3>
 
-<h1>Parameters --> gr</h1>
+<h1>Parameters</h1>
 <p style="color: blue; font-family: helvetica">This is a configuration file editor designed to choose parameter values before launching Evolife simulations.<br><br>Its use is rather intuitive. You may click directly on values you want to change, or navigate with arrows and use the [F2] key to edit values.<br><br>Pay attention to explanations displayed in this panel.</p>
 
 <h1>Scenarios</h1>
@@ -10,10 +10,10 @@
 <h2>Scenarios ==> CurrentScenario</h2>
 <p style="color: blue; font-family: helvetica"></p>
 
-<h3>Scenarios ==> CurrentScenario ==> ScenarioName --> GreenBeard</h3>
+<h3>Scenarios ==> CurrentScenario ==> ScenarioName --> HeteroclineCycle</h3>
 <p style="color: blue; font-family: helvetica"></p>
 
-<h3>Scenarios ==> CurrentScenario ==> ScenarioFileName --> Expe\GreenBeard.evo</h3>
+<h3>Scenarios ==> CurrentScenario ==> ScenarioFileName --> Expe/Heterocline.evo</h3>
 <p style="color: blue; font-family: helvetica"></p>
 
 <h2>Scenarios ==> MyScenario</h2>
@@ -46,7 +46,7 @@
 <h5>Scenarios ==> Genetic Algorithms ==> Labyrinth ==> Evaluation ==> MaxSteps --> 55</h5>
 <p style="color: blue; font-family: helvetica">Maximum number of steps</p>
 
-<h5>Scenarios ==> Genetic Algorithms ==> Labyrinth ==> Evaluation ==> PenaltyPoison --> 1</h5>
+<h5>Scenarios ==> Genetic Algorithms ==> Labyrinth ==> Evaluation ==> PenaltyPoison --> 0.5</h5>
 <p style="color: blue; font-family: helvetica">Penalty for encountering poisonous pheromon<br></p>
 
 <h5>Scenarios ==> Genetic Algorithms ==> Labyrinth ==> Evaluation ==> MaxPoison --> 15</h5>
@@ -88,10 +88,10 @@
 <h3>Scenarios ==> Behavioural Ecology ==> Favourable</h3>
 <p style="color: blue; font-family: helvetica">Simple Darwinian scenario: carriers of gene named 'Favourable' get life points.<br>The gene is expected to invade the population.<br>Alternatively, individuals get some collective benefit from the fact that<br>there are carriers of the 'Favourable' gene in the group. In that case,<br>the fate of the gene is no longer obvious, even if the collective benefit is high!</p>
 
-<h4>Scenarios ==> Behavioural Ecology ==> Favourable ==> IndividualBenefit --> -10</h4>
+<h4>Scenarios ==> Behavioural Ecology ==> Favourable ==> IndividualBenefit --> 5</h4>
 <p style="color: blue; font-family: helvetica"></p>
 
-<h4>Scenarios ==> Behavioural Ecology ==> Favourable ==> CollectiveBenefit --> 100</h4>
+<h4>Scenarios ==> Behavioural Ecology ==> Favourable ==> CollectiveBenefit --> 0</h4>
 <p style="color: blue; font-family: helvetica"></p>
 
 <h4>Scenarios ==> Behavioural Ecology ==> Favourable ==> Cumulative --> 0</h4>
@@ -163,13 +163,13 @@
 <h4>Scenarios ==> Dyadic games ==> Cooperation ==> FirstStep --> 100</h4>
 <p style="color: blue; font-family: helvetica">Indicates the maximal number of score points <br>that can be granted by the first player to its partner.<br>This amount is modulated by the value of the first player's<br>corresponding gene.</p>
 
-<h4>Scenarios ==> Dyadic games ==> Cooperation ==> FirstStepCost --> 30</h4>
+<h4>Scenarios ==> Dyadic games ==> Cooperation ==> FirstStepCost --> 70</h4>
 <p style="color: blue; font-family: helvetica">Proportional price, IN PERCENTAGE, payed by the first player.</p>
 
 <h4>Scenarios ==> Dyadic games ==> Cooperation ==> SecondStep --> 100</h4>
 <p style="color: blue; font-family: helvetica">Amount IN PERCENTAGE of max reciprocity in the 'reciprocity' scenario.</p>
 
-<h4>Scenarios ==> Dyadic games ==> Cooperation ==> SecondStepCost --> 30</h4>
+<h4>Scenarios ==> Dyadic games ==> Cooperation ==> SecondStepCost --> 70</h4>
 <p style="color: blue; font-family: helvetica">Proportional price, IN PERCENTAGE, payed by the second player in the 'reciprocity' scenario.</p>
 
 <h4>Scenarios ==> Dyadic games ==> Cooperation ==> NewEncounterProbability --> 40</h4>
@@ -199,7 +199,7 @@
 <h4>Scenarios ==> Dyadic games ==> HawkDove ==> PieToShare --> 10</h4>
 <p style="color: blue; font-family: helvetica">Value of V.</p>
 
-<h4>Scenarios ==> Dyadic games ==> HawkDove ==> BattleCost --> 20</h4>
+<h4>Scenarios ==> Dyadic games ==> HawkDove ==> BattleCost --> 40</h4>
 <p style="color: blue; font-family: helvetica">Value of C. May be larger or smaller than 'PieToShare' (V).</p>
 
 <h3>Scenarios ==> Dyadic games ==> Gazelle</h3>
@@ -208,7 +208,7 @@
 <h4>Scenarios ==> Dyadic games ==> Gazelle ==> GazelleToLionRatio --> 80</h4>
 <p style="color: blue; font-family: helvetica">Percentage of gazelles (G/(G+L))</p>
 
-<h4>Scenarios ==> Dyadic games ==> Gazelle ==> JumpEnergy --> 0</h4>
+<h4>Scenarios ==> Dyadic games ==> Gazelle ==> JumpEnergy --> 20</h4>
 <p style="color: blue; font-family: helvetica">Handicap of jumping in the presence of lions (betwenn 0 and 100). This strength cannot be used to run away.</p>
 
 <h4>Scenarios ==> Dyadic games ==> Gazelle ==> Vulnerability --> 10</h4>
@@ -274,7 +274,7 @@
 <h1>Ecology</h1>
 <p style="color: blue; font-family: helvetica"><br></p>
 
-<h2>Ecology ==> PopulationSize --> 200</h2>
+<h2>Ecology ==> PopulationSize --> 100</h2>
 <p style="color: blue; font-family: helvetica">The size of the population is maintained constant <br><br></p>
 
 <h2>Ecology ==> MigrationRate --> 30</h2>
@@ -283,19 +283,19 @@
 <h2>Ecology ==> ReproductionRate --> 20</h2>
 <p style="color: blue; font-family: helvetica">Proportion of the population that is replaced with newborns each year (in %)<br></p>
 
-<h2>Ecology ==> SelectionPressure --> 0</h2>
+<h2>Ecology ==> SelectionPressure --> 20</h2>
 <p style="color: blue; font-family: helvetica">Defines how individual survival depends on score:<br><br>0 -->&nbsp;&nbsp; no bias<br>12 -->&nbsp;&nbsp;Highest scores may have 12 times less chance to be eliminated<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;than individuals with lowest scores<br><br>(Note that selection may also be achieved through differential reproduction<br>(see parameter Selectivity))<br><br>Important: For selection pressure to operate properly, scores should always be positive<br><br>Warning: This selection method tends to "saturate": when most scores reach high values,<br>the method is blind to slight differences among individuals. However, it might be less<br>violent than the selectivity method, which has converse qualities.<br><br>At the beginning of the 'Selection pressure' process, scores are linearly converted into life points (from 0 to SelectionPressure). Then individuals are repeatedly exposed to random accidents that cost them a life point. The process is repeated until the size of the population is brought back to its maximal value.</p>
 
-<h2>Ecology ==> Selectivity --> 10</h2>
+<h2>Ecology ==> Selectivity --> 0</h2>
 <p style="color: blue; font-family: helvetica">Defines how parenthood is biased toward individuals with high scores<br><br>S == 0 --> no bias<br>S == 1 --> elitism is roughly linear<br>S == 20 --> strong elitism<br>S == 40 --> very strong elitism<br><br>(Note that selection may also be achieved through differential mortality <br>(see parameter SelectionPressure))<br><br> Warning: This selection method is elitist. It amplifies small differences among top inidividuals, <br>but fails to discriminate among the crowd. It favours extreme (or lucky) behaviour. The SelectionPressure method has converse <br>qualities.<br><br>At the beginning of the 'selectivity' process, individuals are ranked, based on their score. They are given a number of children that depends on their rank (which depends non-linearly on their score). Parents are repeatedly drawn from the set of individuals that still have children to beget.</p>
 
-<h2>Ecology ==> NumberOfGroups --> 5</h2>
+<h2>Ecology ==> NumberOfGroups --> 1</h2>
 <p style="color: blue; font-family: helvetica">The population is split in groups.<br>Groups are an ecological entity: reproductions and interactions take place within the group.<br>"NumberOfGroups" indicates the desired number of groups. Groups that are too big are split in two.<br>Expect actual groups to be only approximatively in that number.<br></p>
 
 <h2>Ecology ==> GroupMinSize --> 0</h2>
 <p style="color: blue; font-family: helvetica">Group minimal size<br>Groups that are too small are dissolved: their members must emigrate to other existing groups<br></p>
 
-<h2>Ecology ==> Rounds --> 4</h2>
+<h2>Ecology ==> Rounds --> 1</h2>
 <p style="color: blue; font-family: helvetica">Numbers of times each individual interacts with others each year</p>
 
 <h2>Ecology ==> AgeMax --> 10</h2>
@@ -319,28 +319,31 @@
 <h1>Genetics</h1>
 <p style="color: blue; font-family: helvetica"></p>
 
-<h2>Genetics ==> MutationRate --> 5</h2>
+<h2>Genetics ==> MutationRate --> 10</h2>
 <p style="color: blue; font-family: helvetica">Mutation rate in xxx/1000 <br></p>
 
 <h2>Genetics ==> NbCrossover --> 1</h2>
 <p style="color: blue; font-family: helvetica">Indicates the number of cut points when performing crossover</p>
 
-<h2>Genetics ==> GeneCoding --> 1</h2>
-<p style="color: blue; font-family: helvetica">Indicates the way portions of DNA should ne interpreted<br>- Weighted: standard integer binary coding<br>- Unweighted: all bits play symmertrical roles <br>- Gray: Gray code<br>- Nocoding: genome is not decoded<br><br>Note: the WEIGHTED method may provoke sudden changes in gene expression. This may be good to escape from local <br>optima, since in the UNWEIGHTED condition, several mutations must be accumulated in the same individuals for significant change to occur.</p>
+<h2>Genetics ==> GeneCoding --> Weighted</h2>
+<p style="color: blue; font-family: helvetica">Indicates the way portions of DNA should ne interpreted<br>- Weighted: standard integer binary coding<br>- Unweighted: all bits play symmertrical roles <br>- Gray: Gros-Gray code<br>- Positional: index of first bit=0<br>- Nocoding: genome is not decoded<br><br>Note: the WEIGHTED method may provoke sudden changes in gene expression. This may be good to escape from local <br>optima, since in the UNWEIGHTED condition, several mutations must be accumulated in the same individuals for significant change to occur.</p>
 
-<h3>Genetics ==> GeneCoding ==> Weighted --> 0</h3>
+<h3>Genetics ==> GeneCoding ==> Weighted --> Weighted</h3>
 <p style="color: blue; font-family: helvetica">Genes interpreted as standard integer coding.<br>Advantage: many available values;<br>&nbsp;&nbsp;&nbsp;&nbsp;variable selection pressure on loci:<br>&nbsp;&nbsp;&nbsp;&nbsp;important loci evolve first.<br>&nbsp;&nbsp;&nbsp;&nbsp;Mutations on low bits have local effects<br>Caveat: getting from&nbsp;&nbsp;011111 to 100000 requires<br>&nbsp;&nbsp;&nbsp;&nbsp;six mutations, though the values are adjacent.</p>
 
-<h3>Genetics ==> GeneCoding ==> Unweighted --> 1</h3>
+<h3>Genetics ==> GeneCoding ==> Unweighted --> Unweighted</h3>
 <p style="color: blue; font-family: helvetica">Genes interpreted as the sum of their bits<br>Advantage: all puncutal mutation have local effects<br>Caveat: only few values allowed if gene length is small, <br>&nbsp;&nbsp;&nbsp;&nbsp;and very slow evolution and high sensitivity to noise<br>&nbsp;&nbsp;&nbsp;&nbsp;if gene length is large</p>
 
-<h3>Genetics ==> GeneCoding ==> Gray --> 2</h3>
-<p style="color: blue; font-family: helvetica">Genes are interpreted using a Gray code.<br>In a Gray code, neighbouring integers differ by only one bit.<br>Advantage: neighbouring values are reachable by punctual mutations <br>Caveat: most punctual mutations have non-local effects</p>
+<h3>Genetics ==> GeneCoding ==> Gray --> Gray</h3>
+<p style="color: blue; font-family: helvetica">Genes are interpreted using a Gros-Gray code.<br>In a Gros-Gray code, neighbouring integers differ by only one bit.<br>Advantage: neighbouring values are reachable by punctual mutations <br>Caveat: most punctual mutations have non-local effects</p>
 
-<h3>Genetics ==> GeneCoding ==> NoCoding --> -1</h3>
-<p style="color: blue; font-family: helvetica"></p>
+<h3>Genetics ==> GeneCoding ==> Positional --> Positional</h3>
+<p style="color: blue; font-family: helvetica">index of first bit=0 - e.g.:<br>1101101 --> 2<br>1111100 --> 5<br>111111 -> 6</p>
 
-<h2>Genetics ==> GeneLength --> 20</h2>
+<h3>Genetics ==> GeneCoding ==> NoCoding --> NoCoding</h3>
+<p style="color: blue; font-family: helvetica">A gene is a list of integers 0 or 1</p>
+
+<h2>Genetics ==> GeneLength --> 8</h2>
 <p style="color: blue; font-family: helvetica">Some scenarios don't specify gene length (by setting it to zero).<br>The value indicated here is taken as default value in this case.</p>
 
 <h2>Genetics ==> DNAFill --> 0</h2>
@@ -355,20 +358,29 @@
 <h1>Display</h1>
 <p style="color: blue; font-family: helvetica"></p>
 
-<h2>Display ==> DisplayPeriod --> 10</h2>
+<h2>Display ==> DisplayPeriod --> 1</h2>
 <p style="color: blue; font-family: helvetica">Period between successive plots <br>0:&nbsp;&nbsp;no plot<br>1:&nbsp;&nbsp;plot every year<br>10: typical<br><br></p>
 
-<h2>Display ==> TimeLimit --> 20000</h2>
+<h2>Display ==> TimeLimit --> 10000</h2>
 <p style="color: blue; font-family: helvetica">Maximum number of steps before simulation stops. Set to 0 if no limit.<br>If DisplayPeriod == 0, Evolife will automatically exit after TimeLimit.<br>Otherwise, it will switch to stepwise mode. It is thus ready to <br>run until another TimeLimit is reached again.<br></p>
 
-<h2>Display ==> DumpStart --> 100</h2>
-<p style="color: blue; font-family: helvetica">Points located below this x-value are discarded from the computation of average values.<br>Average values thus reflect the stable regime.</p>
+<h2>Display ==> Title --> Evolife</h2>
+<p style="color: blue; font-family: helvetica">Name of the present Configuration Editor</p>
+
+<h2>Display ==> Icon --> Graphics/EvolifeIcon.png</h2>
+<p style="color: blue; font-family: helvetica">local path to window icon</p>
 
 <h1>Run Settings</h1>
 <p style="color: blue; font-family: helvetica"></p>
 
 <h2>Run Settings ==> Correction --> 1</h2>
 <p style="color: blue; font-family: helvetica">Teacher's mode.</p>
+
+<h2>Run Settings ==> RandomSeed --> 111</h2>
+<p style="color: blue; font-family: helvetica">If non-zero, makes the simulation deterministic</p>
+
+<h2>Run Settings ==> DumpStart --> 100</h2>
+<p style="color: blue; font-family: helvetica">Points located below this x-value are discarded from the computation of average values.<br>Average values thus reflect the stable regime.<br>Can be expressed in % of TimeLimit (e.g. 10%)</p>
 
 <h2>Run Settings ==> BatchMode --> 0</h2>
 <p style="color: blue; font-family: helvetica">If set to 1, no display occurs. Useful to launch experiments in batch mode, e.g. on several machines. <br>Results are still stored in .csv files. In batch mode, these files are given unique names, so that different experiments can be run simultaneously.</p>
@@ -385,10 +397,7 @@
 <h2>Run Settings ==> RunConfigFile --> Evolife.evo</h2>
 <p style="color: blue; font-family: helvetica">Parameter file that will be read by the programme</p>
 
-<h2>Run Settings ==> Title --> Evolife</h2>
-<p style="color: blue; font-family: helvetica">Name of the present Configuration Editor</p>
-
-<h2>Run Settings ==> Icon --> Graphics/EvolifeIcon.png</h2>
-<p style="color: blue; font-family: helvetica">local path to window icon</p>
+<h2>Run Settings ==> Run --> 1</h2>
+<p style="color: blue; font-family: helvetica">If 0 or False, the simulation waits for button [Run] to start.</p>
 
 <h2></h2></html>
