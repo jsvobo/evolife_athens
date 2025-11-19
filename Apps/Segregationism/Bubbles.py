@@ -37,6 +37,32 @@ INDIV_ASPECT = ('red', -1)	# negative size makes it zoomable
 FILM_ASPECT = ('green', -2)	# negative size makes it zoomable
 ERASE_ASPECT = (1,1,-1,)	# negative colour erases from display
 
+EvolifeColours = ['#808080', '#000000', '#FFFFFF', '#0000FF', '#FF0000', '#FFFF00', '#A06000', '#0080A0', '#FF80A0', '#94DCDC', 
+			'#008000', '#009500', '#00AA00', '#00BF00', '#00D400', '#00E900', '#00FE00', '#64FF64', '#78FF78', '#8CFF8C', '#A0FFA0', '#B4FFB4',
+			'#800000', '#950000', '#AA0000', '#BF0000', '#D40000', '#E90000', '#FE0000', '#FF6464', '#FF7878', '#FF8C8C', '#FFA0A0', '#FFB4B4',
+			'#000080', '#101095', '	#2020AA', '#3030BF', '#3838D4', '#4747E9', '#5555FE', '#6464FF', '#7878FF', '#8C8CFF', '#A0A0FF', '#B4B4FF',
+			'#FF8C00',
+		   ]
+EvolifeColourNames = ['grey', 'black', 'white', 'blue', 'red', 'yellow', 'brown', 'blue02', 'pink', 'lightblue', 
+			'green', 'green1', 'green2', 'green3', 'green4', 'green5', 'green6', 'green7', 'green8', 'green9', 'green10', 'green11',  # 21
+			'red0', 'red1', 'red2', 'red3', 'red4', 'red5', 'red6', 'red7', 'red8', 'red9', 'red10', 'red11', # 33
+			'blue0', 'blue1', 'blue2', 'blue3', 'blue4', 'blue5', 'blue6', 'blue7', 'blue8', 'blue9', 'blue10', 'blue11',
+			'orange',
+			]
+
+cluster_aspect = {
+	1: ("green", -1),
+	2: ("red", -1),
+	3: ("blue", -1),
+	4: ("orange", -1),
+	5: ("green6", -1),
+	6: ("red6", -1),
+	7: ("blue6", -1),
+	8: ("pink", -1),
+	9: ("brown", -1),
+	10: ("yellow", -1),
+}
+
 class StepingKmeans:
 	def __init__(self, n_clusters=6, max_iter=100):
 		self.n_clusters = n_clusters
@@ -150,7 +176,8 @@ class Individual:
 		self.Location = None
 		while True:
 			if self.move(randomLoc()):	break
-		self.cluster = None
+		self.cluster = 1
+		self.Aspect = cluster_aspect.get(self.cluster, INDIV_ASPECT)
 
 		
 	def display(self):
@@ -237,6 +264,7 @@ class Population:
 
 		for indiv, cid in zip(self.members, self.MiniBatchLabels):
 			indiv.cluster = cid
+			indiv.Aspect = cluster_aspect.get(cid+1, INDIV_ASPECT)
 		
 			
 	def selectIndividual(self):	
@@ -287,6 +315,7 @@ class Population:
 		if getattr(self, 'clustering', None) is not None and all_positions:
 			for indiv, cid in zip(self.members, self.clustering.predict(all_positions)):
 				indiv.cluster = cid
+				indiv.Aspect = cluster_aspect.get(cid+1, INDIV_ASPECT)
 
 		# 4-connected toroidal neighbors
 		def neighbors(loc):
@@ -340,7 +369,7 @@ class Population:
 		# 1: f = largest/N
 		# 2: f = largest^2/  (N*csize)
 		# 3: f = largest^3 / (N*csize^2)
-		lmbda = 50.0
+		lmbda =10.0
 
 		N = max(1, len(self.members))
 
