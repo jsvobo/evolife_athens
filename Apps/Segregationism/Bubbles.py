@@ -301,7 +301,6 @@ class Population:
 		self.films.append(self.currentFilm)
 		self.currentFilm = None
 
-		# clustering on Concerned
 		# clustering on all individuals using partial_fit
 		all_positions = [indiv.Location for indiv in self.members]
 		if getattr(self, 'clustering', None) is not None and all_positions:
@@ -334,68 +333,43 @@ class Population:
 		self.PatchSizes = {}
 		self.MeanPatchSizes = {}
 
-		for cid, inds in cluster_to_inds.items():
-			loc_to_ind = {ind.Location: ind for ind in inds}
-			unvisited = set(loc_to_ind.keys())
-			largest = 0
-			indiv_patch = {}
-			psizes = []
+		# Instead of separating by clusters, compute patches over all individuals
+		loc_to_ind = {ind.Location: ind for ind in self.members}
+		unvisited = set(loc_to_ind.keys())
+		all_patch_sizes = []
+		indiv_patch = {}
 
-			while unvisited:
-				start = unvisited.pop()
-				queue = deque([start])
-				patch = {start}
-				while queue:
-					loc = queue.popleft()
-					for n in neighbors(loc):
-						if n in unvisited and n in loc_to_ind:
-							unvisited.remove(n)
-							queue.append(n)
-							patch.add(n)
-				size = len(patch)
-				for loc in patch:
-					indiv_patch[loc_to_ind[loc].ID] = size
-				psizes.append(size)
-				if size > largest:
-					largest = size
+		while unvisited:
+			start = unvisited.pop()
+			queue = deque([start])
+			patch = {start}
+			while queue:
+				loc = queue.popleft()
+				for n in neighbors(loc):
+					if n in unvisited and n in loc_to_ind:
+						unvisited.remove(n)
+						queue.append(n)
+						patch.add(n)
+			size = len(patch)
+			for loc in patch:
+				indiv_patch[loc_to_ind[loc].ID] = size
+			all_patch_sizes.append(size)
 
-			self.LargestPatchSizes[cid] = largest
-			self.PatchSizes[cid] = psizes
-			self.MeanPatchSizes[cid] = (sum(psizes) / len(psizes)) if psizes else 0
-			self.IndividualPatchSizes.update(indiv_patch)
+		self.LargestPatchSizes = {'all': max(all_patch_sizes) if all_patch_sizes else 0}
+		self.PatchSizes = {'all': all_patch_sizes}
+		self.MeanPatchSizes = {'all': (sum(all_patch_sizes) / len(all_patch_sizes)) if all_patch_sizes else 0}
+		self.IndividualPatchSizes = indiv_patch
 
 		# normalized composite objective (WCSS_per_point + lambda * PatchPenalty)
-		q = 1.0
-		# 1: f = largest/N
-		# 2: f = largest^2/  (N*csize)
-		# 3: f = largest^3 / (N*csize^2)
-		lmbda =10.0
-
+		lmbda = 0.5
 		N = max(1, len(self.members))
-
-		# OPTIOn 1: use WCSS as is
-		WCSS_per_point = (getattr(self, 'WCSS', 0.0) / N)
-
-		# OPTIOn 2: Use absolute distance to the cluster center (manhattan dstance)
-		absdist = 0.0
-		for x, l in zip(all_positions, self.MiniBatchLabels):
-			c = self.ClusterCenters[l]
-			absdist += abs(x[0] - c[0]) + abs(x[1] - c[1])
-		WCSS_per_point = absdist / N
-
-		#OPT 3: sqrt of wcss
-		WCSS_per_point = (getattr(self, 'WCSS', 0.0) ** 0.5) / N
-
+		WCSS_per_point = (getattr(self, 'WCSS', 0.0)**0.5) / N
 		
-
-
-		cluster_sizes = {cid: len(inds) for cid, inds in cluster_to_inds.items()}
+		# Compute patch_penalty as mean of patch sizes squared divided by N (over all individuals)
 		patch_penalty = 0.0
-		for cid, largest in self.LargestPatchSizes.items():
-			csize = cluster_sizes.get(cid, 0)
-			if csize:
-				f = largest / csize
-				patch_penalty += (f ** q) * (csize / N)
+		all_patch_sizes = list(set(all_patch_sizes))
+		if all_patch_sizes:
+			patch_penalty = sum(size for size in all_patch_sizes) / N
 
 		self.Objective = WCSS_per_point + lmbda * patch_penalty
 		self.WCSS_per_point = WCSS_per_point
@@ -409,8 +383,13 @@ class Population:
 			self.PatchPenalty
 		))
 
-		Observer.curve("Objective", self.Objective)
+		Observer.curve("Objective", 100*self.Objective)
+		Observer.curve("PatchPenalty", 100 * self.PatchPenalty)
+		#Observer.curve("SqrtWCSS", 100 * ((getattr(self, 'WCSS', 0.0) ** 0.5)/N) )
 
+		# Display all individuals after updating clusters
+		for indiv in self.members:
+			indiv.display()
 
 		# housekeeping
 		self.CallsSinceLastMove += 1
@@ -419,10 +398,12 @@ class Population:
 		return True
 
 
-class Modified_Observer(EO.Observer):
+class Modified_Observer(EO.Experiment_Observer):
 	def __init__(self, Params):
 		super().__init__(Params)
 		self.curve("Objective", Color="Blue", Legend="Objective")
+		self.curve("PatchPenalty", Color="Red", Legend="Patch Penalty")
+		#self.curve("SqrtWCSS", Color="Green", Legend="Sqrt WCSS")
 
 
 if __name__ == "__main__":
