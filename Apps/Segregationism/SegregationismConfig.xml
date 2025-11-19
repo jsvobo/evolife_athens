@@ -26,7 +26,7 @@
 		<Parameter>
 			<Name>NeighbourhoodRadius</Name>
 			<Description><info><![CDATA[Distance at which neighbours are considered]]></info></Description>
-			<Value>5</Value>
+			<Value>10</Value>
 		</Parameter>
 		<Parameter Scenario="Bubbles">
 			<Name>InfluenceRadius</Name>

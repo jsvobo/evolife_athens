@@ -288,6 +288,7 @@ class Population:
 		# 			different smapling?
 		# 			taking larger neighborgood?
 		# 			not tking the closest?
+		# repelling!
 		Concerned = DirectlyConcerned[:]
 		for indiv in DirectlyConcerned:
 			neigh = indiv.inspect(Type='individual', radius=Gbl['NeighbourhoodRadius'])
@@ -296,7 +297,7 @@ class Population:
 				Concerned += random.sample(neigh, k_ind)
 
 		for indiv in Concerned:
-			indiv.closer(self.currentFilm.Location)
+			indiv.closer(self.currentFilm.Location) #here the movement happens. can add function to repel
 
 		self.films.append(self.currentFilm)
 		self.currentFilm = None
@@ -320,7 +321,12 @@ class Population:
 		def neighbors(loc):
 			x, y = loc
 			L = Gbl['LandSize']
-			return [((x - 1) % L, y), ((x + 1) % L, y), (x, (y - 1) % L), (x, (y + 1) % L)]
+			return [
+				((x - 1) % L, y), ((x + 1) % L, y),
+				(x, (y - 1) % L), (x, (y + 1) % L),
+				((x - 1) % L, (y - 1) % L), ((x - 1) % L, (y + 1) % L),
+				((x + 1) % L, (y - 1) % L), ((x + 1) % L, (y + 1) % L)
+			]
 
 		# group by cluster & compute connected components (patches)
 		cluster_to_inds = defaultdict(list)
@@ -361,17 +367,29 @@ class Population:
 		self.IndividualPatchSizes = indiv_patch
 
 		# normalized composite objective (WCSS_per_point + lambda * PatchPenalty)
-		lmbda = 0.5
+		lmbda = 1
 		N = max(1, len(self.members))
 		WCSS_per_point = (getattr(self, 'WCSS', 0.0)**0.5) / N
 		
 		# Compute patch_penalty as mean of patch sizes squared divided by N (over all individuals)
 		patch_penalty = 0.0
-		all_patch_sizes = list(set(all_patch_sizes))
 		if all_patch_sizes:
-			patch_penalty = sum(size for size in all_patch_sizes) / N
+			patch_penalty = max(all_patch_sizes) / N
 
-		self.Objective = WCSS_per_point + lmbda * patch_penalty
+		# Calculate average number of neighbors per individual (using 8-connected toroidal neighbors)
+		neighbor_counts = []
+		for indiv in self.members:
+			loc = indiv.Location
+			count = 0
+			for n in neighbors(loc):
+				if n in loc_to_ind:
+					count += 1
+			neighbor_counts.append(count)
+		avg_neighbors = sum(neighbor_counts) / (8*N) if neighbor_counts else 0
+		self.AvgNeighbors = avg_neighbors
+		patch_penalty = avg_neighbors
+
+		self.Objective = WCSS_per_point + lmbda * patch_penalty 
 		self.WCSS_per_point = WCSS_per_point
 		self.PatchPenalty = patch_penalty
 
@@ -385,7 +403,7 @@ class Population:
 
 		Observer.curve("Objective", 100*self.Objective)
 		Observer.curve("PatchPenalty", 100 * self.PatchPenalty)
-		#Observer.curve("SqrtWCSS", 100 * ((getattr(self, 'WCSS', 0.0) ** 0.5)/N) )
+		Observer.curve("SqrtWCSS", 100 * self.WCSS_per_point)
 
 		# Display all individuals after updating clusters
 		for indiv in self.members:
@@ -401,9 +419,9 @@ class Population:
 class Modified_Observer(EO.Experiment_Observer):
 	def __init__(self, Params):
 		super().__init__(Params)
-		self.curve("Objective", Color="Blue", Legend="Objective")
-		self.curve("PatchPenalty", Color="Red", Legend="Patch Penalty")
-		#self.curve("SqrtWCSS", Color="Green", Legend="Sqrt WCSS")
+		self.curve("Objective", Color="blue", Legend="Objective")
+		self.curve("PatchPenalty", Color="red", Legend="Patch Penalty")
+		self.curve("SqrtWCSS", Color="green", Legend="Sqrt WCSS")
 
 
 if __name__ == "__main__":

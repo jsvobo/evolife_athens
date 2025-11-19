@@ -9,7 +9,7 @@ Influence	20
 InfluenceRadius	10
 InfluenceRatio	50
 LandSize	100
-NeighbourhoodRadius	5
+NeighbourhoodRadius	25
 PopulationSize	300
 ResultDir	./___Results
 Run	1
